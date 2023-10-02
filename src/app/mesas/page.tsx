@@ -1,7 +1,9 @@
 
 const MesasPage = () => {
   return (
-    <div>MesasPage</div>
+    <section className="pageBackground">
+        
+    </section>
   )
 }
 

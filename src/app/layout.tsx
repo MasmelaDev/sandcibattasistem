@@ -23,7 +23,7 @@ export default async function RootLayout({
           <NextUIProviders>
             <Header />
               
-            <main className="min-h-screen pt-20">{children}</main>
+            <main className="main">{children}</main>
           </NextUIProviders>
         </SessionAuthProvider>
       </body>
