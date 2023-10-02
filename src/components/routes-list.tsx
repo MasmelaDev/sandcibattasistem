@@ -1,6 +1,6 @@
 "use client";
 import { motion } from "framer-motion";
-
+import Link from "next/link";
 const routes = [
   { label: "Mesas", route: "/mesas" },
   { label: "Domicilios", route: "/domicilios" },
@@ -13,8 +13,11 @@ export const RoutesList = () => {
   return (
     <>
       {routes.map((route) => (
-        <motion.article className="w-96 h-96 flex justify-center items-center rounded-lg bg-white" key={route.route}>
-          <p>{route.label}</p>
+        
+        <motion.article className="w-96 h-96  rounded-lg bg-white" key={route.route}>
+          <Link href={route.route} className="w-full h-full flex justify-center items-center ">
+          {route.label} 
+          </Link>
         </motion.article>
       ))}
     </>

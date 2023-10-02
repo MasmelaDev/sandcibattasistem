@@ -6,7 +6,7 @@ import { NextAuthOptions } from "next-auth";
 export const AuthOptions: NextAuthOptions = {
   adapter: PrismaAdapter(db),
   pages: {
-    signIn: "/sign-in",
+    signIn: "/iniciar-sesion",
   },
   secret: process.env.NEXTAUTH_SECRET,
   session: {
