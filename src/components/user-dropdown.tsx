@@ -1,6 +1,5 @@
-import React from "react";
+"use client";
 import { type Session } from "next-auth";
-
 import { signOut } from "next-auth/react";
 
 import {
@@ -16,25 +15,27 @@ type Props = {
 };
 
 export function UserDropdown({ session }: Props) {
-  const handleSignOut = () =>{
-    signOut()
-  }
+  const handleSignOut = () => {
+    signOut();
+  };
   return (
     <Dropdown>
       <DropdownTrigger>
-        <Avatar
-          as="button"
-          className="transition-transform"
-          src=""
-        />
+        <Avatar as="button" className="transition-transform" src="" />
       </DropdownTrigger>
       <DropdownMenu aria-label="Profile Actions" variant="flat">
         <DropdownItem key="profile" textValue="profile">
           <p className="font-semibold">{session.user?.name}</p>
         </DropdownItem>
 
-        <DropdownItem  onClick={handleSignOut} key="logout" textValue="logout" className="text-red-500" color="danger" >
-        Cerrar sesion
+        <DropdownItem
+          onClick={handleSignOut}
+          key="logout"
+          textValue="logout"
+          className="text-red-500"
+          color="danger"
+        >
+          <span className=" font-semibold">Cerrar sesion</span>
         </DropdownItem>
       </DropdownMenu>
     </Dropdown>

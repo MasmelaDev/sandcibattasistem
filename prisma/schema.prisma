@@ -6,7 +6,7 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
@@ -28,6 +28,7 @@ model categories {
 model products {
   id         Int        @id @default(autoincrement())
   name       String
+  price      Int
   category   categories @relation(fields: [categoryId], references: [id])
   categoryId Int
   createdAt  DateTime   @default(now())
@@ -37,7 +38,7 @@ model products {
 model tables {
   id          Int    @id @default(autoincrement())
   numberTable Int    @unique
-  position Int
+  position    Int    @unique
   currentSale sales?
 }
 
@@ -46,27 +47,28 @@ model domiciliary {
   name  String
   sales sales[]
 }
-// enum saleStatus{
-//   pending
-//   sent
-//   delivered
-// }
+
+enum saleStatus {
+  pending
+  sent
+  delivered
+}
 
 model sales {
   id            Int          @id @default(autoincrement())
   delivery      Boolean
   products      products[]
-  deliveryPrice Int
-  total Int
-  status String
-  createdAt    DateTime      @default(now())
+  deliveryPrice Int          @default(0)
+  total         Int
+  status        saleStatus
+  createdAt     DateTime     @default(now())
   updatedAt     DateTime     @updatedAt
-  customer customers @relation(fields: [customerId],references: [id])
-  customerId Int
+  customer      customers    @relation(fields: [customerId], references: [id])
+  customerId    Int
   table         tables?      @relation(fields: [tableId], references: [id])
   tableId       Int?         @unique
   domiciliary   domiciliary? @relation(fields: [domiciliaryId], references: [id])
-  domiciliaryId Int
+  domiciliaryId Int?
 }
 
 model address {
@@ -86,10 +88,11 @@ model neighborhood {
 
 model customers {
   id        Int      @id @default(autoincrement())
+  name      String
   email     String?
   createdAt DateTime @default(now())
   phone     String
   address   address  @relation(fields: [addressId], references: [id])
   addressId Int      @unique
-  sales sales[]
+  sales     sales[]
 }

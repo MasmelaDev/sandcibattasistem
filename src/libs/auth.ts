@@ -40,7 +40,7 @@ export const AuthOptions: NextAuthOptions = {
         });
 
         if (!existingUser) {
-          return null;
+          throw new Error("Usuario incorrecto") ;
         }
 
         const isPasswordValid = await compare(
@@ -49,7 +49,7 @@ export const AuthOptions: NextAuthOptions = {
         );
 
         if (!isPasswordValid) {
-          return null;
+          throw new Error("Contraseña incorrecta") ;
         }
 
         return {
@@ -60,5 +60,6 @@ export const AuthOptions: NextAuthOptions = {
       },
     }),
   ],
+ 
 
 };

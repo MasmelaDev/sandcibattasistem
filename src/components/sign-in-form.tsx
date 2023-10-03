@@ -69,7 +69,7 @@ export const SignInForm = () => {
             name="user"
             id="user"
             type="text"
-            className="bg-[#333] lg:bg-[#ddd] lg:placeholder:text-black/70 lg:text-black text-white placeholder:text-white/70 rounded-md pl-3 py-4 w-full max-full font-medium focus:outline-none focus:ring-transparent"
+            className="bg-[#333] lg:bg-[#ddd] lg:placeholder:text-black/70 lg:text-black text-white placeholder:text-white/70 rounded-md pl-3 py-4 w-full max-full font-semibold focus:outline-none focus:ring-transparent"
           />
         </label>
         <label
@@ -82,7 +82,7 @@ export const SignInForm = () => {
             type="password"
             name="password"
             id="password"
-            className="bg-[#333] lg:bg-[#ddd] lg:placeholder:text-black/70 lg:text-black text-white placeholder:text-white/70 rounded-md pl-3 py-4 w-full max-w-sm font-medium focus:outline-none focus:ring-transparent"
+            className="bg-[#333] lg:bg-[#ddd] lg:placeholder:text-black/70 lg:text-black text-white placeholder:text-white/70 rounded-md pl-3 py-4 w-full max-w-sm font-semibold focus:outline-none focus:ring-transparent"
           />
         </label>
 
