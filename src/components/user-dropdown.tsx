@@ -33,8 +33,8 @@ export function UserDropdown({ session }: Props) {
           <p className="font-semibold">{session.user?.name}</p>
         </DropdownItem>
 
-        <DropdownItem  onClick={handleSignOut} key="logout" textValue="Sign out" className="text-red-500" color="danger" >
-        Sign Out
+        <DropdownItem  onClick={handleSignOut} key="logout" textValue="logout" className="text-red-500" color="danger" >
+        Cerrar sesion
         </DropdownItem>
       </DropdownMenu>
     </Dropdown>
