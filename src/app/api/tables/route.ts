@@ -1,6 +1,18 @@
 import { db } from "@/libs/prisma";
 import { NextResponse } from "next/server";
 
+export async function GET() {
+  try {
+    const tables = await db.tables.findMany();
+    return NextResponse.json({ tables }, { status: 200 });
+  } catch (error) {
+    if (error instanceof Error) {
+      return NextResponse.json({ error: error.message }, { status: 500 });
+    }
+  }
+}
+
+
 export async function POST(req: Request) {
   try {
     const body = await req.json();
@@ -41,9 +53,9 @@ export async function POST(req: Request) {
       { status: 201 }
     );
   } catch (error) {
-    return NextResponse.json(
-      { message: "Something went wrong" },
-      { status: 500 }
-    );
+    if (error instanceof Error) {
+      return NextResponse.json({ error: error.message }, { status: 500 });
+    }
   }
 }
+
