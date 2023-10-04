@@ -21,7 +21,7 @@ model users {
 
 model categories {
   id       Int        @id @default(autoincrement())
-  name     String
+  name     String @unique
   products products[]
 }
 
@@ -63,8 +63,8 @@ model sales {
   status        saleStatus
   createdAt     DateTime     @default(now())
   updatedAt     DateTime     @updatedAt
-  customer      customers    @relation(fields: [customerId], references: [id])
-  customerId    Int
+  customer      customers?    @relation(fields: [customerId], references: [id])
+  customerId    Int?
   table         tables?      @relation(fields: [tableId], references: [id])
   tableId       Int?         @unique
   domiciliary   domiciliary? @relation(fields: [domiciliaryId], references: [id])

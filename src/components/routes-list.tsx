@@ -1,14 +1,7 @@
 "use client";
 import { motion } from "framer-motion";
 import Link from "next/link";
-const routes = [
-  { label: "Mesas", route: "/mesas" },
-  { label: "Domicilios", route: "/domicilios" },
-  { label: "Ventas", route: "/ventas" },
-  { label: "Clientes", route: "/clientes" },
-  { label: "Gastos", route: "/gastos" },
-  { label: "Productos", route: "/productos" },
-];
+import { routes } from "@/libs/routes";
 export const RoutesList = () => {
   return (
     <>
