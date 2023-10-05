@@ -6,13 +6,13 @@ import { useContext } from "react";
 import { seatingsContext } from "@/context/seatings-context";
 export const SeatingMenu = () => {
 
-  const { tables, selectedTable, changeSelectedTable } = useContext(seatingsContext);
+  const { selectedTable, changeSelectedTable } = useContext(seatingsContext);
 
   if (!changeSelectedTable) {
     return <div>Error</div>;
   }
   return (
-    <div className="w-full h-full flex justify-center items-center bg-black/10">
+    <div className="w-full h-full absolute top-0 left-0 flex justify-center items-center bg-black/10">
       <motion.div
         animate={{ scale: 1 }}
         initial={{ scale: 0 }}

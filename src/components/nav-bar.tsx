@@ -1,15 +1,12 @@
 import React from "react";
-import { routes } from "@/libs/routes";
 import Link from "next/link";
+import { IconArrowBack } from "@tabler/icons-react";
+
 export const Navbar = () => {
   return (
     <nav>
       <ul className="flex gap-2">
-        {routes.map((route) => (
-          <li key={route.route}>
-            <Link href={route.route}>{route.label}</Link>
-          </li>
-        ))}
+        <Link href='/'><IconArrowBack/></Link>
       </ul>
     </nav>
   );
