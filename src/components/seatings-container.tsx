@@ -6,20 +6,24 @@ import { useContext } from "react";
 import { seatingsContext } from "@/context/seatings-context";
 import { IconEdit, IconDoorExit } from "@tabler/icons-react";
 export const SeatingsContainer = () => {
-  const { modeEdit,changeModeEdit,selectedTable } = useContext(seatingsContext);
+  const { modeEdit, changeModeEdit, selectedTable } =
+    useContext(seatingsContext);
   return (
     <>
       <SeatingsGrid />
-      <div className="h-full w-3/5 bg-[#ddd] flex flex-col relative">
+      <div className="h-full w-3/5 flex flex-col relative">
         <button
-          className="bg-grayBackground p-1 rounded-md ml-auto m-3"
+          className="bg-grayBackground p-1 rounded-md mr-auto m-3"
           onClick={changeModeEdit}
           title="Modo edicion de mesas"
         >
-          
-          {modeEdit ?<IconDoorExit /> : <IconEdit />}
+          {modeEdit ? <IconDoorExit /> : <IconEdit />}
         </button>
-        <AnimatePresence>{selectedTable && <SeatingMenu />}</AnimatePresence>
+        
+
+        <AnimatePresence>
+          {selectedTable && <SeatingMenu />}
+        </AnimatePresence>
       </div>
     </>
   );

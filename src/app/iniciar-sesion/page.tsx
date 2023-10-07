@@ -8,9 +8,11 @@ const SignInPage = async () => {
     redirect("/");
   }
   return (
-    <section className=" flex flex-col items-center justify-center   w-full">
-      <SignInForm />
-    </section>
+    <div className="h-screen w-screen absolute flex flex-col items-center justify-center bg-grayBackground top-0 lef-0">
+      <section className=" flex flex-col items-center justify-center   w-full">
+        <SignInForm />
+      </section>
+    </div>
   );
 };
 

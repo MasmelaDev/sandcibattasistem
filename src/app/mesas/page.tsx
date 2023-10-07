@@ -2,7 +2,7 @@ import { SeatingsContainer } from "@/components/seatings-container";
 import { type tables } from "@prisma/client";
 import { SeatingsProvider } from "@/context/seatings-context";
 const getTables = async (): Promise<tables[]> => {
-  const res = await fetch("http://localhost:3000/api/tables", {
+  const res = await fetch(`http://localhost:3000/api/tables`, {
     cache: "no-cache",
   });
   const data = await res.json();
