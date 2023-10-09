@@ -2,17 +2,17 @@
 import { toast } from "sonner";
 
 import { createContext, useEffect, useState } from "react";
-import { type tables, type sales } from "@prisma/client";
+import {type ExtendedTables, type ExtendedSales} from "@/types/prisma"
 interface MyContextData {
   modeEdit?: boolean;
   changeModeEdit?: () => void;
-  selectedTable?: tables | null;
-  salesToday?:  sales[]
+  selectedTable?: ExtendedTables | null;
+  salesToday?:  ExtendedSales[]
   deleteTable?: (id: number) => void;
   editPosition?: (position: number, id: number) => void;
   addTable?: (position: number, numberTable: number) => void;
-  changeSelectedTable?: (tables: tables | null) => void;
-  tablesList?: tables[];
+  changeSelectedTable?: (tables: ExtendedTables | null) => void;
+  tablesList?: ExtendedTables[];
 }
 export const seatingsContext = createContext<MyContextData>({});
 
@@ -21,24 +21,24 @@ export const SeatingsProvider = ({
   tables,
 }: {
   children: React.ReactNode;
-  tables: tables[];
+  tables: ExtendedTables[];
 }) => {
-  const [selectedTable, setSelectedTable] = useState<tables | null>(null);
+  const [selectedTable, setSelectedTable] = useState<ExtendedTables | null>(null);
   const [modeEdit, setModeEdit] = useState(false);
-  const [tablesList, setTablesList] = useState<tables[]>(tables);
-  const [salesToday,setSalesToday] = useState<sales[]>([])
+  const [tablesList, setTablesList] = useState<ExtendedTables[]>(tables);
+  const [salesToday,setSalesToday] = useState<ExtendedSales[]>([])
 
   const changeModeEdit = () => {
     setModeEdit(!modeEdit);
   };
-  const changeSelectedTable = (table: tables | null) => {
+  const changeSelectedTable = (table: ExtendedTables | null) => {
     setSelectedTable(table);
   };
   useEffect(()=>{
 
     const getSalesToday = async () => {
       const data = await fetch("http://localhost:3000/api/sales/today")
-      const sales:sales[] = await data.json()
+      const sales:ExtendedSales[] = await data.json()
       setSalesToday(sales)
     }
     getSalesToday()

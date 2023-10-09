@@ -75,8 +75,8 @@ model sales {
 model productsInSale {
   id       Int        @id @default(autoincrement())
   amount   Int
-  sale     sales      @relation(fields: [saleId], references: [id])
-  saleId   Int
+  total    Int
+  sale     sales?
   product products   @relation(fields: [productId], references: [id])
   productId Int
 }

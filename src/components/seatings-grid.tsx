@@ -6,7 +6,6 @@ import { seatingsContext } from "@/context/seatings-context";
 import {
   IconPlus,
   IconX,
-  IconPencil,
   IconTrash,
   IconArrowsMove,
 } from "@tabler/icons-react";
@@ -66,7 +65,7 @@ export const SeatingsGrid = () => {
                     }
                     className={`bg-[#33cc55]  table-shadow ${
                       isEditPosition.open ? "" : "cursor-pointer"
-                    } font-bold text-xl transition-all duration-250 w-[150px] h-[150px] absolute  flex justify-center items-center  rounded-full  `}
+                    } font-bold text-white text-xl transition-all duration-250 w-[150px] h-[150px] absolute  flex justify-center items-center  rounded-full  `}
                   >
                     {tableAtPosition.numberTable}
 
@@ -122,7 +121,7 @@ export const SeatingsGrid = () => {
                         setOpenModal({ position: position, open: true })
                       }
                       title="Agregar una mesa"
-                      className="bg-[#777] absolute rounded-md p-1"
+                      className="bg-[#777] text-white absolute rounded-md p-1"
                     >
                       <IconPlus />
                     </motion.button>
@@ -132,7 +131,7 @@ export const SeatingsGrid = () => {
                           animate={{ scale: 1 }}
                           initial={{ scale: 0 }}
                           exit={{ scale: 0 }}
-                          className="bg-white flex text-grayBackground flex-col absolute gap-2 pt-5 h-[150px] z-20 overflow-hidden items-center justify-center w-[280px] rounded-md"
+                          className="bg-white flex text-grayBackground flex-col absolute gap-2 pt-5 h-[150px] z-20 overflow-hidden items-center justify-center  w-[280px] rounded-md"
                         >
                           <div className="font-semibold bg-amber-500 w-full absolute top-0  pl-2 py-1 text-white flex">
                             <span>Numero de mesa</span>
@@ -222,7 +221,7 @@ export const SeatingsGrid = () => {
                     key={tableAtPosition.id}
                     id={`${tableAtPosition.position}`}
                     onClick={() => changeSelectedTable(tableAtPosition)}
-                    className={` ${tableStyleStatus} ${selectedTableStyle} cursor-pointer w-[150px] h-[150px] font-bold transition-all duration-250  text-xl  flex justify-center items-center  rounded-full  `}
+                    className={` ${tableStyleStatus} ${selectedTableStyle} cursor-pointer w-[150px] h-[150px] font-bold transition-all duration-250  text-xl  flex justify-center items-center text-white rounded-full  `}
                   >
                     {tableAtPosition.numberTable}
                   </motion.div>

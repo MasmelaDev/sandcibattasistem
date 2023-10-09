@@ -1,6 +1,5 @@
 import { db } from "@/libs/prisma";
 import { NextResponse } from "next/server";
-import { sales } from "@prisma/client";
 export async function GET() {
   try {
     const today = new Date();
@@ -10,7 +9,7 @@ export async function GET() {
       where: { createdAt: { gte: today } },
       include: {
         table: true,
-        productsInSale:{include:{product:true}}
+        productsInSale:{include:{product:true}},
         
       },
     });

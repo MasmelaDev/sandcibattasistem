@@ -6,7 +6,7 @@ export const Navbar = () => {
   return (
     <nav>
       <ul className="flex gap-2">
-        <Link href='/'><IconArrowBack/></Link>
+        <Link className="text-white" href='/'><IconArrowBack/></Link>
       </ul>
     </nav>
   );
