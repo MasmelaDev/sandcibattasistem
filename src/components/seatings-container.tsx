@@ -5,9 +5,13 @@ import { SeatingMenu } from "./seating-menu";
 import { useContext } from "react";
 import { seatingsContext } from "@/context/seatings-context";
 import { IconEdit, IconDoorExit } from "@tabler/icons-react";
-export const SeatingsContainer = () => {
-  const { modeEdit, changeModeEdit, selectedTable } =
+import { Tables } from "./tables";
+export const SeatingsContainer =  () => {
+  const { modeEdit, salesToday, changeModeEdit, selectedTable } =
     useContext(seatingsContext);
+
+  
+
   return (
     <>
       <SeatingsGrid />
@@ -19,11 +23,9 @@ export const SeatingsContainer = () => {
         >
           {modeEdit ? <IconDoorExit /> : <IconEdit />}
         </button>
-        
 
-        <AnimatePresence>
-          {selectedTable && <SeatingMenu />}
-        </AnimatePresence>
+        <Tables sales={salesToday} />
+        <AnimatePresence>{selectedTable && <SeatingMenu />}</AnimatePresence>
       </div>
     </>
   );

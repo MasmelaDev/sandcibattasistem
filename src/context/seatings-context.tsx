@@ -1,12 +1,13 @@
 "use client";
 import { toast } from "sonner";
 
-import { createContext, useState } from "react";
-import { type tables } from "@prisma/client";
+import { createContext, useEffect, useState } from "react";
+import { type tables, type sales } from "@prisma/client";
 interface MyContextData {
   modeEdit?: boolean;
   changeModeEdit?: () => void;
   selectedTable?: tables | null;
+  salesToday?:  sales[]
   deleteTable?: (id: number) => void;
   editPosition?: (position: number, id: number) => void;
   addTable?: (position: number, numberTable: number) => void;
@@ -25,6 +26,7 @@ export const SeatingsProvider = ({
   const [selectedTable, setSelectedTable] = useState<tables | null>(null);
   const [modeEdit, setModeEdit] = useState(false);
   const [tablesList, setTablesList] = useState<tables[]>(tables);
+  const [salesToday,setSalesToday] = useState<sales[]>([])
 
   const changeModeEdit = () => {
     setModeEdit(!modeEdit);
@@ -32,7 +34,16 @@ export const SeatingsProvider = ({
   const changeSelectedTable = (table: tables | null) => {
     setSelectedTable(table);
   };
+  useEffect(()=>{
 
+    const getSalesToday = async () => {
+      const data = await fetch("http://localhost:3000/api/sales/today")
+      const sales:sales[] = await data.json()
+      setSalesToday(sales)
+    }
+    getSalesToday()
+  },[])
+  
   const deleteTable = async (id: number) => {
     const res = await fetch(`http://localhost:3000/api/tables/${id}`, {
       method: "DELETE",
@@ -78,6 +89,7 @@ export const SeatingsProvider = ({
       value={{
         modeEdit,
         editPosition,
+        salesToday,
         addTable,
         deleteTable,
         changeModeEdit,
