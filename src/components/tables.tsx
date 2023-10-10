@@ -35,11 +35,11 @@ export const Tables = ({ sales }: { sales: ExtendedSales[] | undefined }) => {
     return (
       <>
         {Object.keys(salesByStatus).map((status) => (
-          <>
+          <div key={status} className="w-full">
             <h2 className={status}>
               {statusTitlesSeating[status as saleStatus]}
             </h2>
-            <table className={`${status} seatingsTable`} key={status}>
+            <table className={`${status} seatingsTable w-full`} key={status}>
               <thead className={status}>
                 <tr>
                   <th>Mesa</th>
@@ -59,7 +59,7 @@ export const Tables = ({ sales }: { sales: ExtendedSales[] | undefined }) => {
                 })}
               </tbody>
             </table>
-          </>
+          </div>
         ))}
       </>
     );

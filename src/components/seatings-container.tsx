@@ -15,9 +15,9 @@ export const SeatingsContainer =  () => {
   return (
     <>
       <SeatingsGrid />
-      <div className="h-full w-3/5 flex flex-col relative">
+      <div className="h-full w-3/5 flex flex-col justify-around relative p-5 ">
         <button
-          className="bg-grayBackground text-white p-1 rounded-md mr-auto m-3"
+          className="bg-grayBackground text-white p-1 absolute rounded-md top-5 left-3"
           onClick={changeModeEdit}
           title="Modo edicion de mesas"
         >
