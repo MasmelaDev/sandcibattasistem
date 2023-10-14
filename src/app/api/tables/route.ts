@@ -3,15 +3,20 @@ import { NextResponse } from "next/server";
 
 export async function GET() {
   try {
-    const tables = await db.tables.findMany({include:{currentSale:true}});
-    return NextResponse.json(tables , { status: 200 });
+    const tables = await db.tables.findMany({
+      include: {
+        currentSale: {
+          include: { productsInSale: { include: { product: true } } },
+        },
+      },
+    });
+    return NextResponse.json(tables, { status: 200 });
   } catch (error) {
     if (error instanceof Error) {
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
   }
 }
-
 
 export async function POST(req: Request) {
   try {
@@ -58,4 +63,3 @@ export async function POST(req: Request) {
     }
   }
 }
-

@@ -9,8 +9,11 @@ export async function GET() {
       where: { createdAt: { gte: today } },
       include: {
         table: true,
-        productsInSale:{include:{product:true}},
-        
+        productsInSale: {
+          include: { product: true },
+          orderBy: { total:"asc"},
+          
+        },
       },
     });
     return NextResponse.json(sales, { status: 200 });

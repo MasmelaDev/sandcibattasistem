@@ -2,18 +2,19 @@
 import { type ExtendedSales } from "@/types/prisma";
 import { saleStatus } from "@prisma/client";
 import { usePathname } from "next/navigation";
+import { useState } from "react";
+import { AnimatePresence } from "framer-motion";
+import { TableRow } from "./table-row";
+import { SaleDetails } from "./sale-details";
+
 enum SaleStatus {
   Pending = "pending",
   Sent = "sent",
   Delivered = "delivered",
 }
 
-
-import { TableRow } from "./table-row";
 export const Tables = ({ sales }: { sales: ExtendedSales[] | undefined }) => {
   const pathname = usePathname();
-
-
   const statusTitlesSeating: { [key in SaleStatus]: string } = {
     [SaleStatus.Pending]: "En preparacion...",
     [SaleStatus.Sent]: "En mesa",
@@ -29,7 +30,13 @@ export const Tables = ({ sales }: { sales: ExtendedSales[] | undefined }) => {
     salesByStatus[sale.status].push(sale);
   });
 
+  const [showSaleDetails, setShowSaleDetails] = useState<ExtendedSales | null>(
+    null
+  );
 
+  const updateShowSaleDetail = (sale: ExtendedSales | null) => {
+    setShowSaleDetails(sale);
+  };
 
   if (pathname === "/mesas") {
     return (
@@ -43,27 +50,41 @@ export const Tables = ({ sales }: { sales: ExtendedSales[] | undefined }) => {
               <thead className={status}>
                 <tr>
                   <th>Mesa</th>
-                  <th>Productos</th>
                   <th>Fecha</th>
                   <th>Total</th>
                   <th>Opciones</th>
                 </tr>
               </thead>
-              <tbody className="overflow-hidden relative z-20">
-                {salesByStatus[status as SaleStatus].map((sale) => {
-                  if (!sale.delivery) {
-                    return (
-                  <TableRow key={sale.id} sale={sale} status={status}/>
-                    );
-                  }
-                })}
+              <tbody className="overflow-hidden relative">
+                <AnimatePresence>
+                  {salesByStatus[status as SaleStatus].map((sale) => {
+                    if (!sale.delivery) {
+                      return (
+                        <TableRow
+                          key={sale.id}
+                          sale={sale}
+                          status={status}
+                          updateShowSaleDetail={updateShowSaleDetail}
+                        />
+                      );
+                    }
+                  })}
+                </AnimatePresence>
               </tbody>
             </table>
           </div>
         ))}
+        <AnimatePresence>
+          {showSaleDetails && (
+            <SaleDetails
+              sale={showSaleDetails}
+              updateShowSaleDetail={updateShowSaleDetail}
+            />
+          )}
+        </AnimatePresence>
       </>
     );
   } else {
-    return <div>s</div>;
+    return <div></div>;
   }
 };

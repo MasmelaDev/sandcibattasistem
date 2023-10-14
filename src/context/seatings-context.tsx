@@ -1,26 +1,18 @@
 "use client";
 import { toast } from "sonner";
-
+import { useRouter } from "next/navigation";
 import { createContext, useEffect, useState } from "react";
 import { type ExtendedTables, type ExtendedSales } from "@/types/prisma";
-import { type products } from "@prisma/client";
+import { calculateTotal } from "@/libs/formats";
 
-type productsInSaleList = {
-  amount: number;
-  total: number;
-  productId: number;
-  product: products;
-};
 interface MyContextData {
   modeEdit?: boolean;
   changeModeEdit?: () => void;
-  addProductToSale?: (product: products) => void;
   selectedTable?: ExtendedTables | null;
   salesToday?: ExtendedSales[];
-  totalSale?:number
-  productsInSaleList?: productsInSaleList[];
+  totalSale?: string;
   deleteTable?: (id: number) => void;
-  editPosition?: (position: number, id: number) => void;
+  editTablePosition?: (position: number, id: number) => void;
   addTable?: (position: number, numberTable: number) => void;
   changeSelectedTable?: (tables: ExtendedTables | null) => void;
   tablesList?: ExtendedTables[];
@@ -37,30 +29,38 @@ export const SeatingsProvider = ({
   const [selectedTable, setSelectedTable] = useState<ExtendedTables | null>(
     null
   );
+  const router = useRouter()
   const [modeEdit, setModeEdit] = useState(false);
   const [tablesList, setTablesList] = useState<ExtendedTables[]>(tables);
   const [salesToday, setSalesToday] = useState<ExtendedSales[]>([]);
-  const [productsList, setProductList] = useState<products[]>([]);
-  const [totalSale, setTotalSale] = useState(0);
-
-  const [productsInSaleList, setProductsInSaleList] = useState<
-    productsInSaleList[]
-  >([]);
-
-  const changeModeEdit = () => {
-    setModeEdit(!modeEdit);
-  };
-  const changeSelectedTable = (table: ExtendedTables | null) => {
-    setSelectedTable(table);
-  };
+  const [totalSale, setTotalSale] = useState("");
   useEffect(() => {
     const getSalesToday = async () => {
       const data = await fetch("http://localhost:3000/api/sales/today");
       const sales: ExtendedSales[] = await data.json();
       setSalesToday(sales);
+      console.log(sales)
     };
     getSalesToday();
-  }, []);
+    setTablesList(tables);
+    setSelectedTable(null)
+  }, [tables]);
+
+
+  const changeModeEdit = () => {
+    setModeEdit(!modeEdit);
+  };
+
+  const changeSelectedTable = (table: ExtendedTables | null) => {
+    if (table?.currentSale?.productsInSale.length) {
+      setTotalSale(calculateTotal(table.currentSale.productsInSale));
+      setSelectedTable(table);
+
+    }else{
+      setSelectedTable(table);
+      setTotalSale("$ 0")
+    }
+  };
 
   const deleteTable = async (id: number) => {
     const res = await fetch(`http://localhost:3000/api/tables/${id}`, {
@@ -87,7 +87,7 @@ export const SeatingsProvider = ({
       toast.error(data?.message);
     }
   };
-  const editPosition = async (position: number, id: number) => {
+  const editTablePosition = async (position: number, id: number) => {
     const res = await fetch(`http://localhost:3000/api/tables/${id}`, {
       cache: "no-cache",
       method: "PUT",
@@ -99,46 +99,19 @@ export const SeatingsProvider = ({
       const filteredTableList = tablesList.filter((table) => table.id !== id);
       setTablesList([...filteredTableList, data]);
     }
+    router.refresh()
   };
-  const addProductToSale = (product: products) => {
-    const newProductList = [...productsList, product];
-    setProductList(newProductList);
-    const productsInSale: productsInSaleList[] = [];
-    for (const product of newProductList) {
-      const productId = product.id;
-      const existingProductIndex = productsInSale.findIndex(
-        (item) => item.productId === productId
-      );
-        setTotalSale(totalSale+product.price)
-      if (existingProductIndex !== -1) {
-        // Si el producto ya existe en el array de productos en venta, incrementamos la cantidad y actualizamos el total
-        productsInSale[existingProductIndex].amount++;
-        productsInSale[existingProductIndex].total += product.price;
-      } else {
-        // Si no existe, lo agregamos al array de productos en venta
 
-        productsInSale.push({
-          amount: 1,
-          total: product.price,
-          productId: productId,
-          product: product,
-        });
-      }
-    }
-    setProductsInSaleList(productsInSale);
-  };
   return (
     <seatingsContext.Provider
       value={{
         modeEdit,
-        editPosition,
+        editTablePosition,
         salesToday,
-        totalSale,
-        addProductToSale,
-        productsInSaleList,
         addTable,
         deleteTable,
         changeModeEdit,
+        totalSale,
         selectedTable,
         changeSelectedTable,
         tablesList,

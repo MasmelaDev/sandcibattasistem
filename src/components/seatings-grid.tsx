@@ -13,7 +13,7 @@ import {
 export const SeatingsGrid = () => {
   const {
     modeEdit,
-    editPosition,
+    editTablePosition,
     addTable,
     deleteTable,
     tablesList,
@@ -29,7 +29,7 @@ export const SeatingsGrid = () => {
     open: false,
   });
 
-  if (!changeSelectedTable || !tablesList || !addTable || !deleteTable || !editPosition) {
+  if (!changeSelectedTable || !tablesList || !addTable || !deleteTable || !editTablePosition) {
     return <div>Error</div>;
   }
 
@@ -63,7 +63,7 @@ export const SeatingsGrid = () => {
                     onMouseLeave={() =>
                       setOpenModal({ position: position, open: false })
                     }
-                    className={`bg-[#33cc55]  table-shadow ${
+                    className={`bg-[#999]  table-shadow--edit ${
                       isEditPosition.open ? "" : "cursor-pointer"
                     } font-bold text-white text-xl transition-all duration-250 w-[150px] h-[150px] absolute  flex justify-center items-center  rounded-full  `}
                   >
@@ -181,7 +181,7 @@ export const SeatingsGrid = () => {
                       initial={{ opacity: 0 }}
                       exit={{ opacity: 0 }}
                       onClick={() => {
-                        editPosition(position, isEditPosition.tableId);
+                        editTablePosition(position, isEditPosition.tableId);
                         setIsEditPosition({ tableId: 0, open: false });
                       }}
                       className="bg-[#999] animate-pulse w-full h-full"

@@ -25,7 +25,6 @@ model categories {
   products products[]
 }
 
-
 model tables {
   id          Int    @id @default(autoincrement())
   numberTable Int    @unique
@@ -45,23 +44,23 @@ enum saleStatus {
   delivered
 }
 
-
 model products {
-  id               Int             @id @default(autoincrement())
-  name             String
-  price            Int
-  category         categories      @relation(fields: [categoryId], references: [id])
-  categoryId       Int
-  createdAt        DateTime        @default(now())
-  productsInSale   productsInSale[]
+  id             Int              @id @default(autoincrement())
+  name           String
+  price          Int
+  category       categories       @relation(fields: [categoryId], references: [id])
+  categoryId     Int
+  createdAt      DateTime         @default(now())
+  productsInSale productsInSale[]
 }
+
 model sales {
   id             Int              @id @default(autoincrement())
   delivery       Boolean
   productsInSale productsInSale[]
   deliveryPrice  Int              @default(0)
-  total          Int
-  status         saleStatus
+  observations   String?
+  status         saleStatus       @default(pending)
   createdAt      DateTime         @default(now())
   updatedAt      DateTime         @updatedAt
   customer       customers?       @relation(fields: [customerId], references: [id])
@@ -73,14 +72,15 @@ model sales {
 }
 
 model productsInSale {
-  id       Int        @id @default(autoincrement())
-  amount   Int
-  total    Int
-  sale     sales @relation(fields: [saleId], references: [id])
-  saleId Int
-  product products   @relation(fields: [productId], references: [id])
+  id        Int      @id @default(autoincrement())
+  amount    Int
+  total     Int
+  sale      sales    @relation(fields: [saleId], references: [id])
+  saleId    Int
+  product   products @relation(fields: [productId], references: [id])
   productId Int
 }
+
 model address {
   id             Int          @id @default(autoincrement())
   street         String

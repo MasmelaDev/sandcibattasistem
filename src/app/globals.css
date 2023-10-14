@@ -47,6 +47,11 @@ body {
   grid-template-rows: repeat(3, 1fr);
   background-color: #444;
 }
+.table-shadow--edit{
+  border-bottom: 8px solid #555;
+  transition: all 1s;
+
+}
 .table-shadow {
   border-bottom: 8px solid rgb(21, 128, 61);
 }
@@ -69,7 +74,7 @@ h2.pending {
 thead.pending {
   color: #555;
   font-weight: 600;
-  background-color: rgb(255, 192, 129);
+  background-color: #ffc081;
 }
 
 tbody tr.pending:nth-child(even) {

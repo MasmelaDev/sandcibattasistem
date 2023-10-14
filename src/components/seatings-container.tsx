@@ -24,8 +24,8 @@ export const SeatingsContainer =  () => {
           {modeEdit ? <IconDoorExit /> : <IconEdit />}
         </button>
 
-        <Tables sales={salesToday} />
-        <AnimatePresence>{selectedTable && <SeatingMenu />}</AnimatePresence>
+        <Tables   sales={salesToday} />
+        <AnimatePresence>{selectedTable && <SeatingMenu selectedTable={selectedTable} />}</AnimatePresence>
       </div>
     </>
   );
