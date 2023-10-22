@@ -1,4 +1,4 @@
-"use client";
+'use client'
 import { AnimatePresence } from "framer-motion";
 import { SeatingsGrid } from "./seatings-grid";
 import { SeatingMenu } from "./seating-menu";
@@ -9,13 +9,10 @@ import { Tables } from "./tables";
 export const SeatingsContainer =  () => {
   const { modeEdit, salesToday, changeModeEdit, selectedTable } =
     useContext(seatingsContext);
-
-  
-
   return (
     <>
       <SeatingsGrid />
-      <div className="h-full w-3/5 flex flex-col justify-around relative p-5 ">
+      <div className="h-full w-3/5 flex flex-col  relative overflow-y-auto p-5 pt-16">
         <button
           className="bg-grayBackground text-white p-1 absolute rounded-md top-5 left-3"
           onClick={changeModeEdit}
@@ -24,7 +21,7 @@ export const SeatingsContainer =  () => {
           {modeEdit ? <IconDoorExit /> : <IconEdit />}
         </button>
 
-        <Tables   sales={salesToday} />
+        <Tables sales={salesToday} />
         <AnimatePresence>{selectedTable && <SeatingMenu selectedTable={selectedTable} />}</AnimatePresence>
       </div>
     </>

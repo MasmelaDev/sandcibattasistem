@@ -48,6 +48,7 @@ model products {
   id             Int              @id @default(autoincrement())
   name           String
   price          Int
+  costo          Int?
   category       categories       @relation(fields: [categoryId], references: [id])
   categoryId     Int
   createdAt      DateTime         @default(now())

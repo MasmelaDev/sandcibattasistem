@@ -78,7 +78,7 @@ thead.pending {
 }
 
 tbody tr.pending:nth-child(even) {
-  background-color: rgba(255, 192, 129, 0.3);
+  background-color: #ffc0814d;
 }
 tbody tr.pending:nth-child(odd) {
   background-color: #eeea;

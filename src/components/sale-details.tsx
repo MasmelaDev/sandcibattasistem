@@ -31,7 +31,7 @@ export const SaleDetails = ({ sale, updateShowSaleDetail }: Props) => {
   const openSeatingMenu = (tableId: number) => {
     const table = tablesList?.find((table) => table.id == tableId);
     if (table) {
-      updateShowSaleDetail(null)
+      updateShowSaleDetail(null);
       changeSelectedTable(table);
     } else {
       return;
@@ -52,23 +52,26 @@ export const SaleDetails = ({ sale, updateShowSaleDetail }: Props) => {
       initial={{ x: 800 }}
       transition={{ duration: 0.3 }}
       exit={{ x: 800 }}
-      className="absolute w-[38rem] bg-white top-20 h-[70vh] right-0 z-50 shadow-lg flex flex-col shadow-black/30 overflow-x-hidden overflow-y-auto rounded-tl-lg rounded-bl-lg"
+      className="fixed w-[38rem] bg-white top-30 h-[70vh] right-0 z-50 shadow-lg flex flex-col shadow-black/30 overflow-x-hidden overflow-y-auto rounded-tl-lg rounded-bl-lg"
     >
       <header className="bg-amber-500 text-white  flex p-2 sticky top-0 w-full  items-center h-14">
-        <h2 className="flex items-center font-semibold">
-          Venta - Mesa #{sale.table.numberTable}
-        </h2>
+        <h2 className="flex items-center font-semibold">Venta</h2>
         <div className="ml-auto flex gap-3" role="group">
-          <button className="p-1 bg-amber-600 rounded-lg" onClick={() => openSeatingMenu(sale.table.id)}>
-            <IconEdit />
-          </button>
-          <button className="p-1 bg-amber-600 rounded-lg" onClick={() => deleteSale(sale.id)}>
+          {sale.tableId && (
+            <button
+              className="p-1 bg-amber-600 rounded-lg"
+              onClick={() => openSeatingMenu(sale.table.id)}
+            >
+              <IconEdit />
+            </button>
+          )}
+          <button
+            className="p-1 bg-amber-600 rounded-lg"
+            onClick={() => deleteSale(sale.id)}
+          >
             <IconTrash />
           </button>
-          <button
-            className="p-1"
-            onClick={() => updateShowSaleDetail(null)}
-          >
+          <button className="p-1" onClick={() => updateShowSaleDetail(null)}>
             <IconX />
           </button>
         </div>
@@ -91,7 +94,7 @@ export const SaleDetails = ({ sale, updateShowSaleDetail }: Props) => {
             <span className="font-medium">Tiempo: </span>{" "}
             <TimerCounter date={saleDate} />
           </p>
-          <p>
+          <p className="break-words">
             <span className="font-medium">Observaciones: </span>{" "}
             {sale.observations}
           </p>

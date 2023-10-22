@@ -19,7 +19,7 @@ export function UserDropdown({ session }: Props) {
     signOut();
   };
   return (
-    <Dropdown>
+    <Dropdown className="text-white">
       <DropdownTrigger>
         <Avatar as="button" className="transition-transform" src="" />
       </DropdownTrigger>

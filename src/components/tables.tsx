@@ -16,8 +16,8 @@ enum SaleStatus {
 export const Tables = ({ sales }: { sales: ExtendedSales[] | undefined }) => {
   const pathname = usePathname();
   const statusTitlesSeating: { [key in SaleStatus]: string } = {
-    [SaleStatus.Pending]: "En preparacion...",
-    [SaleStatus.Sent]: "En mesa",
+    [SaleStatus.Pending]: "En preparación...",
+    [SaleStatus.Sent]: "En mesa...",
     [SaleStatus.Delivered]: "Pagos",
   };
 
@@ -41,39 +41,91 @@ export const Tables = ({ sales }: { sales: ExtendedSales[] | undefined }) => {
   if (pathname === "/mesas") {
     return (
       <>
-        {Object.keys(salesByStatus).map((status) => (
-          <div key={status} className="w-full">
-            <h2 className={status}>
-              {statusTitlesSeating[status as saleStatus]}
-            </h2>
-            <table className={`${status} seatingsTable w-full`} key={status}>
-              <thead className={status}>
-                <tr>
-                  <th>Mesa</th>
-                  <th>Fecha</th>
-                  <th>Total</th>
-                  <th>Opciones</th>
-                </tr>
-              </thead>
-              <tbody className="overflow-hidden relative">
-                <AnimatePresence>
-                  {salesByStatus[status as SaleStatus].map((sale) => {
-                    if (!sale.delivery) {
-                      return (
-                        <TableRow
-                          key={sale.id}
-                          sale={sale}
-                          status={status}
-                          updateShowSaleDetail={updateShowSaleDetail}
-                        />
-                      );
-                    }
-                  })}
-                </AnimatePresence>
-              </tbody>
-            </table>
-          </div>
-        ))}
+        {Object.keys(salesByStatus).map((status) => {
+          if (status === "delivered")
+            return (
+              <div key={status} className="w-full">
+                <h2 className={status}>
+                  {statusTitlesSeating[status as saleStatus]}
+                </h2>
+                <table
+                  className={`${status} seatingsTable w-full`}
+                  key={status}
+                >
+                  <thead className={status}>
+                    <tr>
+                      <th>Fecha</th>
+                      <th>Total</th>
+                    </tr>
+                  </thead>
+                  <tbody className="overflow-hidden relative">
+                    <AnimatePresence>
+                      {salesByStatus[status as SaleStatus].map((sale) => {
+                        if (!sale.delivery) {
+                          return (
+                            <TableRow
+                              key={sale.id}
+                              sale={sale}
+                              updateShowSaleDetail={updateShowSaleDetail}
+                            />
+                          );
+                        }
+                      })}
+                    </AnimatePresence>
+                    {!salesByStatus[status as SaleStatus].length && (
+                      <tr className="h-14 border">
+                        <td colSpan={5} className="text-center ">
+                          No hay pedidos pagos
+                        </td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            );
+
+          return (
+            <div key={status} className="w-full min-h-[20rem]">
+              <h2 className={status}>
+                {statusTitlesSeating[status as saleStatus]}
+              </h2>
+              <table className={`${status} seatingsTable w-full`} key={status}>
+                <thead className={status}>
+                  <tr>
+                    <th>Fecha</th>
+                    <th>Total</th>
+                    <th>Mesa</th>
+                    <th>Opciones</th>
+                  </tr>
+                </thead>
+                <tbody className="overflow-hidden relative">
+                  <AnimatePresence>
+                    {salesByStatus[status as SaleStatus].map((sale) => {
+                      if (!sale.delivery) {
+                        return (
+                          <TableRow
+                            key={sale.id}
+                            sale={sale}
+                            updateShowSaleDetail={updateShowSaleDetail}
+                          />
+                        );
+                      }
+                    })}
+                    {!salesByStatus[status as SaleStatus].length && (
+                      <tr className="h-14 border">
+                        <td colSpan={5} className="text-center ">
+                          {status === "sent" && "No hay pedidos en mesa"}
+                          {status === "pending" &&
+                            "No hay pedidos en preparación"}
+                        </td>
+                      </tr>
+                    )}
+                  </AnimatePresence>
+                </tbody>
+              </table>
+            </div>
+          );
+        })}
         <AnimatePresence>
           {showSaleDetails && (
             <SaleDetails

@@ -3,14 +3,12 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { createContext, useEffect, useState } from "react";
 import { type ExtendedTables, type ExtendedSales } from "@/types/prisma";
-import { calculateTotal } from "@/libs/formats";
 
 interface MyContextData {
   modeEdit?: boolean;
   changeModeEdit?: () => void;
   selectedTable?: ExtendedTables | null;
   salesToday?: ExtendedSales[];
-  totalSale?: string;
   deleteTable?: (id: number) => void;
   editTablePosition?: (position: number, id: number) => void;
   addTable?: (position: number, numberTable: number) => void;
@@ -29,37 +27,26 @@ export const SeatingsProvider = ({
   const [selectedTable, setSelectedTable] = useState<ExtendedTables | null>(
     null
   );
-  const router = useRouter()
+  const router = useRouter();
   const [modeEdit, setModeEdit] = useState(false);
   const [tablesList, setTablesList] = useState<ExtendedTables[]>(tables);
   const [salesToday, setSalesToday] = useState<ExtendedSales[]>([]);
-  const [totalSale, setTotalSale] = useState("");
   useEffect(() => {
     const getSalesToday = async () => {
       const data = await fetch("http://localhost:3000/api/sales/today");
       const sales: ExtendedSales[] = await data.json();
       setSalesToday(sales);
-      console.log(sales)
     };
     getSalesToday();
     setTablesList(tables);
-    setSelectedTable(null)
   }, [tables]);
-
 
   const changeModeEdit = () => {
     setModeEdit(!modeEdit);
   };
 
   const changeSelectedTable = (table: ExtendedTables | null) => {
-    if (table?.currentSale?.productsInSale.length) {
-      setTotalSale(calculateTotal(table.currentSale.productsInSale));
       setSelectedTable(table);
-
-    }else{
-      setSelectedTable(table);
-      setTotalSale("$ 0")
-    }
   };
 
   const deleteTable = async (id: number) => {
@@ -99,7 +86,7 @@ export const SeatingsProvider = ({
       const filteredTableList = tablesList.filter((table) => table.id !== id);
       setTablesList([...filteredTableList, data]);
     }
-    router.refresh()
+    router.refresh();
   };
 
   return (
@@ -111,7 +98,6 @@ export const SeatingsProvider = ({
         addTable,
         deleteTable,
         changeModeEdit,
-        totalSale,
         selectedTable,
         changeSelectedTable,
         tablesList,

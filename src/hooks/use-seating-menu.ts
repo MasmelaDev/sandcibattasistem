@@ -13,7 +13,7 @@ type productsInSaleListToAdd = {
 };
 
 export const useSeatingMenu = (currentSale: ExtendedSales | undefined) => {
-  const router = useRouter()
+  const router = useRouter();
   const [productsInSaleList, setProductsInSaleList] = useState<
     ExtendedProductsInSale[]
   >([]);
@@ -25,6 +25,7 @@ export const useSeatingMenu = (currentSale: ExtendedSales | undefined) => {
   const [totalSaleToAdd, setTotalSaleToAdd] = useState(0);
 
   useEffect(() => {
+
     if (currentSale) {
       setProductsInSaleList(currentSale.productsInSale);
       setObservations(currentSale.observations);
@@ -36,6 +37,19 @@ export const useSeatingMenu = (currentSale: ExtendedSales | undefined) => {
 
   const updateObservationsValue = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setObservations(e.target.value);
+  };
+
+  const updateObservationInSale = async (
+    saleId: number,
+    observation: string | null
+  ) => {
+    const res = await fetch(`http://localhost:3000/api/sales/${saleId}`, {
+      method: "PUT",
+      body: JSON.stringify({ observations: observation }),
+    });
+    const data = await res.json()
+    router.refresh();
+
   };
 
   const addProductToSale = (product: products) => {
@@ -109,15 +123,20 @@ export const useSeatingMenu = (currentSale: ExtendedSales | undefined) => {
     setProductsInSaleListToAdd(updatedProductsInSaleList);
   };
 
-
   const removeProductInSaleList = async (productInSaleId: number) => {
-
-    const res = await fetch(`http://localhost:3000/api/sales/productInSale/${productInSaleId}`,{
-      method:"DELETE"
-    })
+    const res = await fetch(
+      `http://localhost:3000/api/sales/productInSale/${productInSaleId}`,
+      {
+        method: "DELETE",
+      }
+    );
     const data = await res.json();
-    const filteredList = productsInSaleList.filter((productInSale)=>productInSale.id !== productInSaleId)
-    setProductsInSaleList([...filteredList]);
+    const filteredList = productsInSaleList.filter(
+      (productInSale) => productInSale.id !== productInSaleId
+    );
+
+    setProductsInSaleList(filteredList);
+    router.refresh();
   };
 
   const createSeatingSale = async (tableId: number) => {
@@ -131,14 +150,15 @@ export const useSeatingMenu = (currentSale: ExtendedSales | undefined) => {
       }),
     });
     const data = await res.json();
-    setProductsInSaleList([...productsInSaleList, ...data.productsInSaleList]);
+    setProductsInSaleList(data.productsInSaleList);
     setProductsInSaleListToAdd([]);
-    setTotalSaleToAdd(0)
-    router.refresh()
+    setTotalSaleToAdd(0);
+    router.refresh();
   };
 
   return {
     addProductToSale,
+    updateObservationInSale,
     productsInSaleListToAdd,
     updateObservationsValue,
     removeProductInSaleList,

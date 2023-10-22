@@ -2,9 +2,9 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { IconX, IconPlus, IconMinus, IconTrash } from "@tabler/icons-react";
 import { CategorySelect } from "./category-select";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { seatingsContext } from "@/context/seatings-context";
-import { formatPrice } from "@/libs/formats";
+import { calculateTotal, formatPrice } from "@/libs/formats";
 import { useSeatingMenu } from "@/hooks/use-seating-menu";
 import { type ExtendedTables } from "@/types/prisma";
 
@@ -13,9 +13,9 @@ export const SeatingMenu = ({
 }: {
   selectedTable: ExtendedTables;
 }) => {
-  const { changeSelectedTable, totalSale } = useContext(seatingsContext);
   const {
     addProductToSale,
+    updateObservationInSale,
     productsInSaleListToAdd,
     totalSaleToAdd,
     productsInSaleList,
@@ -26,6 +26,13 @@ export const SeatingMenu = ({
     removeProductInSaleList,
     removeProductFromSaleListToAdd,
   } = useSeatingMenu(selectedTable.currentSale);
+  const [totalSale, setTotalSale] = useState("");
+  1;
+  useEffect(() => {
+    setTotalSale(calculateTotal(productsInSaleList));
+  }, [productsInSaleList]);
+
+  const { changeSelectedTable } = useContext(seatingsContext);
 
   if (!changeSelectedTable) {
     return <div>Error</div>;
@@ -42,7 +49,6 @@ export const SeatingMenu = ({
   return (
     <div className="w-full h-full absolute z-[100] top-0 left-0 flex justify-center items-center bg-black/10">
       <motion.div
-        
         animate={{ scale: 1 }}
         initial={{ scale: 0 }}
         exit={{ scale: 0 }}
@@ -56,7 +62,7 @@ export const SeatingMenu = ({
             <IconX />
           </button>
         </div>
-        <article  className="flex flex-col ">
+        <article className="flex flex-col ">
           <h3 className="bg-[#aaa] text-white text-lg font-bold p-2">
             Agregar productos
           </h3>
@@ -128,7 +134,10 @@ export const SeatingMenu = ({
                     <span className="font-medium mr-2">Total a confirmar:</span>
                     <span>{formatPrice.format(Number(totalSaleToAdd))}</span>
                     <button
-                      onClick={() => createSeatingSale(selectedTable.id)}
+                      onClick={() => {
+                        createSeatingSale(selectedTable.id);
+                        changeSelectedTable(null);
+                      }}
                       className="ml-auto bg-[#555] text-white rounded-md px-2 py-1"
                     >
                       Confirmar
@@ -143,7 +152,7 @@ export const SeatingMenu = ({
           <h3 className="bg-[#aaa] text-white text-lg font-bold p-2">
             Observaciones
           </h3>
-          <div className="w-full p-5 flex justify-center">
+          <div className="w-full p-5 flex flex-col items-center ">
             <textarea
               placeholder="Añade una nota al pedido..."
               value={observations ? observations : ""}
@@ -152,13 +161,26 @@ export const SeatingMenu = ({
               cols={20}
               rows={5}
             ></textarea>
+            {selectedTable.currentSale && (
+              <button
+                onClick={() =>
+                  updateObservationInSale(
+                    selectedTable.currentSale.id,
+                    observations
+                  )
+                }
+                className="mt-5 bg-[#555] text-white font-medium rounded-md px-2 py-1"
+              >
+                Actualizar Observacion
+              </button>
+            )}
           </div>
         </motion.div>
         <motion.div layout className="flex flex-col">
           <h3 className="bg-[#aaa] text-white text-lg font-bold p-2 w-full">
             Pedido
           </h3>
-          {selectedTable.currentSale ? (
+          {productsInSaleList.length ? (
             <div className="w-full p-5">
               <table className="w-full text-[#555] font-medium rounded-md overflow-hidden">
                 <thead>
@@ -174,6 +196,7 @@ export const SeatingMenu = ({
                   <AnimatePresence>
                     {productsInSaleList?.map((productInSale, index) => (
                       <motion.tr
+                        id={`${productInSale.id}`}
                         key={index}
                         initial="hidden"
                         variants={variants}
@@ -210,7 +233,7 @@ export const SeatingMenu = ({
             </p>
           )}
         </motion.div>
-        <div  className="flex flex-col sticky -bottom-1 w-full mt-auto">
+        <div className="flex flex-col sticky -bottom-1 w-full mt-auto">
           <h3 className="bg-[#aaa] text-white text-lg font-bold p-2 flex">
             <span>Total Mesa #{selectedTable?.numberTable}:</span>
             <span className="mr-2 ml-auto">{totalSale}</span>

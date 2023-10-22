@@ -61,13 +61,6 @@ export async function POST(req: Request) {
         }
       }
 
-      const productsInSaleList = productsInSale.map((productInSale) => {
-        return {
-          ...productInSale,
-          saleId: existingSaleInTable.id,
-        };
-      });
-
       if (existingSaleInTable.observations !== observations) {
         const updatedExistingSaleIntable = await db.sales.update({
           where: {
@@ -78,6 +71,12 @@ export async function POST(req: Request) {
           },
         });
       }
+
+      const productsInSaleList = await db.productsInSale.findMany({
+        where: { saleId: existingSaleInTable.id },
+        include: { product: true },
+      });
+
       return NextResponse.json(
         { productsInSaleList, message: "productInSale created succesfully" },
         { status: 201 }
