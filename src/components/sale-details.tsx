@@ -12,7 +12,7 @@ type Props = {
   updateShowSaleDetail: (sale: ExtendedSales | null) => void;
 };
 export const SaleDetails = ({ sale, updateShowSaleDetail }: Props) => {
-  const [saleDate, setSaleDate] = useState<Date>(new Date(sale.createdAt));
+  const saleDate = new Date(sale.createdAt)
   const router = useRouter();
   const { changeSelectedTable, tablesList } = useContext(seatingsContext);
   const variants = {

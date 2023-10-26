@@ -7,12 +7,14 @@ import { seatingsContext } from "@/context/seatings-context";
 import { calculateTotal, formatPrice } from "@/libs/formats";
 import { useSeatingMenu } from "@/hooks/use-seating-menu";
 import { type ExtendedTables } from "@/types/prisma";
+import { ProductInput } from "./product-input";
 
 export const SeatingMenu = ({
   selectedTable,
 }: {
   selectedTable: ExtendedTables;
 }) => {
+  console.log(selectedTable)
   const {
     addProductToSale,
     updateObservationInSale,
@@ -56,22 +58,18 @@ export const SeatingMenu = ({
         transition={{ duration: 0.3, type: "spring" }}
         className="w-4/5 h-4/5 bg-white flex flex-col z-[200] shadow relative rounded-lg overflow-y-auto overflow-x-hidden"
       >
-        <div className="bg-amber-500 p-2 text-white font-medium text-lg flex sticky top-0 justify-between">
+        <header className="bg-amber-500 p-2 text-white font-medium text-lg flex sticky top-0 justify-between z-50">
           <h2>mesa {`#${selectedTable?.numberTable}`}</h2>
           <button onClick={() => changeSelectedTable(null)} className="mr-2">
             <IconX />
           </button>
-        </div>
+        </header>
         <article className="flex flex-col ">
           <h3 className="bg-[#aaa] text-white text-lg font-bold p-2">
             Agregar productos
           </h3>
           <div className="flex flex-col p-5 gap-2">
-            <input
-              placeholder="Buscar producto..."
-              type="text"
-              className="bg-[#eee] focus:outline-none focus:ring-transparent text-grayBackground pl-3 py-3 rounded-sm placeholder:text-[#888]"
-            />
+            <ProductInput addProductToSale={addProductToSale} />
             <CategorySelect addProductToSale={addProductToSale} />
           </div>
           <section className="p-5">

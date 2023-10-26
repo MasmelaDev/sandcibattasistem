@@ -1,6 +1,6 @@
 "use client";
 import { type ExtendedSales } from "@/types/prisma";
-import { saleStatus } from "@prisma/client";
+import { saleInRestaurantStatus } from "@prisma/client";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { AnimatePresence } from "framer-motion";
@@ -9,25 +9,23 @@ import { SaleDetails } from "./sale-details";
 
 enum SaleStatus {
   Pending = "pending",
-  Sent = "sent",
-  Delivered = "delivered",
+  Paid = "paid",
 }
 
 export const Tables = ({ sales }: { sales: ExtendedSales[] | undefined }) => {
   const pathname = usePathname();
   const statusTitlesSeating: { [key in SaleStatus]: string } = {
-    [SaleStatus.Pending]: "En preparación...",
-    [SaleStatus.Sent]: "En mesa...",
-    [SaleStatus.Delivered]: "Pagos",
+    [SaleStatus.Pending]: "Pedidos en preparación...",
+    [SaleStatus.Paid]: "Pedidos pagos",
+  
   };
 
   const salesByStatus: { [key in SaleStatus]: ExtendedSales[] } = {
     [SaleStatus.Pending]: [],
-    [SaleStatus.Sent]: [],
-    [SaleStatus.Delivered]: [],
+    [SaleStatus.Paid]: [],
   };
   sales?.forEach((sale) => {
-    salesByStatus[sale.status].push(sale);
+    salesByStatus[sale.salesInRestaurant.status].push(sale);
   });
 
   const [showSaleDetails, setShowSaleDetails] = useState<ExtendedSales | null>(
@@ -42,11 +40,11 @@ export const Tables = ({ sales }: { sales: ExtendedSales[] | undefined }) => {
     return (
       <>
         {Object.keys(salesByStatus).map((status) => {
-          if (status === "delivered")
+          if (status === "paid")
             return (
               <div key={status} className="w-full">
                 <h2 className={status}>
-                  {statusTitlesSeating[status as saleStatus]}
+                  {statusTitlesSeating[status as SaleStatus]}
                 </h2>
                 <table
                   className={`${status} seatingsTable w-full`}
@@ -61,7 +59,6 @@ export const Tables = ({ sales }: { sales: ExtendedSales[] | undefined }) => {
                   <tbody className="overflow-hidden relative">
                     <AnimatePresence>
                       {salesByStatus[status as SaleStatus].map((sale) => {
-                        if (!sale.delivery) {
                           return (
                             <TableRow
                               key={sale.id}
@@ -69,7 +66,6 @@ export const Tables = ({ sales }: { sales: ExtendedSales[] | undefined }) => {
                               updateShowSaleDetail={updateShowSaleDetail}
                             />
                           );
-                        }
                       })}
                     </AnimatePresence>
                     {!salesByStatus[status as SaleStatus].length && (
@@ -87,7 +83,7 @@ export const Tables = ({ sales }: { sales: ExtendedSales[] | undefined }) => {
           return (
             <div key={status} className="w-full min-h-[20rem]">
               <h2 className={status}>
-                {statusTitlesSeating[status as saleStatus]}
+                {statusTitlesSeating[status as SaleStatus]}
               </h2>
               <table className={`${status} seatingsTable w-full`} key={status}>
                 <thead className={status}>
@@ -101,7 +97,6 @@ export const Tables = ({ sales }: { sales: ExtendedSales[] | undefined }) => {
                 <tbody className="overflow-hidden relative">
                   <AnimatePresence>
                     {salesByStatus[status as SaleStatus].map((sale) => {
-                      if (!sale.delivery) {
                         return (
                           <TableRow
                             key={sale.id}
@@ -109,7 +104,6 @@ export const Tables = ({ sales }: { sales: ExtendedSales[] | undefined }) => {
                             updateShowSaleDetail={updateShowSaleDetail}
                           />
                         );
-                      }
                     })}
                     {!salesByStatus[status as SaleStatus].length && (
                       <tr className="h-14 border">

@@ -6,7 +6,11 @@ export async function GET() {
     const tables = await db.tables.findMany({
       include: {
         currentSale: {
-          include: { productsInSale: { include: { product: true } } },
+          include: {
+            sale: {
+              include: { productsInSale: { include: { product: true } } },
+            },
+          },
         },
       },
     });

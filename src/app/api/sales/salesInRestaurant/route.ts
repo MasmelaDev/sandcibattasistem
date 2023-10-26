@@ -10,7 +10,6 @@ type productsInSaleListToAdd = {
 
 type POSTBody = {
   productsInSale: productsInSaleListToAdd[];
-  delivery: boolean;
   observations: string;
   tableId: number;
 };
@@ -18,19 +17,20 @@ type POSTBody = {
 export async function POST(req: Request) {
   try {
     const body: POSTBody = await req.json();
-    const { tableId, observations, productsInSale, delivery } = body;
+    const { tableId, observations, productsInSale } = body;
 
-    const existingSaleInTable = await db.sales.findFirst({
+    const existingSaleInTable = await db.salesInRestaurant.findFirst({
       where: {
         tableId: tableId,
       },
+      include: { sale: true },
     });
 
     if (existingSaleInTable) {
       const productsInSaleWithSaleId = productsInSale.map((productInSale) => {
         return {
           amount: productInSale.amount,
-          saleId: existingSaleInTable.id,
+          saleId: existingSaleInTable.saleId,
           total: productInSale.total,
           productId: productInSale.productId,
         };
@@ -41,7 +41,7 @@ export async function POST(req: Request) {
           where: {
             AND: [
               { productId: productInSale.productId },
-              { saleId: existingSaleInTable.id },
+              { saleId: existingSaleInTable.saleId },
             ],
           },
         });
@@ -61,10 +61,10 @@ export async function POST(req: Request) {
         }
       }
 
-      if (existingSaleInTable.observations !== observations) {
+      if (existingSaleInTable.sale.observations !== observations) {
         const updatedExistingSaleIntable = await db.sales.update({
           where: {
-            id: existingSaleInTable.id,
+            id: existingSaleInTable.saleId,
           },
           data: {
             observations: observations,
@@ -73,7 +73,7 @@ export async function POST(req: Request) {
       }
 
       const productsInSaleList = await db.productsInSale.findMany({
-        where: { saleId: existingSaleInTable.id },
+        where: { saleId: existingSaleInTable.saleId },
         include: { product: true },
       });
 
@@ -85,9 +85,7 @@ export async function POST(req: Request) {
 
     const sale = await db.sales.create({
       data: {
-        tableId: tableId,
         observations: observations,
-        delivery: delivery,
       },
     });
 
@@ -111,8 +109,19 @@ export async function POST(req: Request) {
       data: productsInSaleWithSaleId,
     });
 
+    const saleInRestaurant = await db.salesInRestaurant.create({
+      data: {
+        saleId: sale.id,
+        tableId: tableId,
+      },
+      include: { sale: { include: { productsInSale: true } }, table: true },
+    });
     return NextResponse.json(
-      { sale, productsInSaleList, message: "Sale created succesfully" },
+      {
+        saleInRestaurant,
+        productsInSaleList,
+        message: "Sale created succesfully",
+      },
       { status: 201 }
     );
   } catch (error) {

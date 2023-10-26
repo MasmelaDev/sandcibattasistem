@@ -1,20 +1,23 @@
 import { type categories, type products } from "@prisma/client";
-import { ChangeEvent, useEffect, useState, useContext } from "react";
-import { seatingsContext } from "@/context/seatings-context";
+import { ChangeEvent, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 
 type Props = {
   addProductToSale: (product: products) => void;
 };
-
 export const CategorySelect = ({ addProductToSale }: Props) => {
   const [categories, setCategories] = useState<categories[] | null>(null);
   const [products, setProducts] = useState<products[] | null>(null);
+
   useEffect(() => {
     const getCategories = async () => {
-      const res = await fetch("http://localhost:3000/api/categories");
+      
+      const res = await fetch(`http://localhost:3000/api/categories`,{
+        cache:"no-cache"
+      });
       const data = await res.json();
       setCategories(data);
+      
     };
     getCategories();
     const selectElement = document.getElementById("categoriesSelect");

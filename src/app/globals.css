@@ -107,19 +107,19 @@ button.sent {
   background-color: rgb(68, 136, 238);
 }
 
-h2.delivered {
+h2.paid {
   color: #68aa60;
   font-weight: 500;
 }
-thead.delivered {
+thead.paid {
   color: #555;
   font-weight: 600;
   background-color: #9fe395;
 }
 
-tbody tr.delivered:nth-child(even) {
+tbody tr.paid:nth-child(even) {
   background-color: rgba(159, 227, 149,.3);
 }
-tbody tr.delivered:nth-child(odd) {
+tbody tr.paid:nth-child(odd) {
   background-color: #eeea;
 }

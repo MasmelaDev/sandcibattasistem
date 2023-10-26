@@ -1,5 +1,5 @@
 import { ChangeEvent, useEffect, useState } from "react";
-import { type products } from "@prisma/client";
+import { type products,tables,salesInRestaurant } from "@prisma/client";
 import {
   type ExtendedSales,
   type ExtendedProductsInSale,
@@ -12,13 +12,15 @@ type productsInSaleListToAdd = {
   product: products;
 };
 
-export const useSeatingMenu = (currentSale: ExtendedSales | undefined) => {
+type currentSale = salesInRestaurant & {
+  sale:ExtendedSales
+ }
+export const useSeatingMenu = (currentSale: currentSale | undefined) => {
   const router = useRouter();
   const [productsInSaleList, setProductsInSaleList] = useState<
     ExtendedProductsInSale[]
   >([]);
   const [observations, setObservations] = useState<string | null>("");
-
   const [productsInSaleListToAdd, setProductsInSaleListToAdd] = useState<
     productsInSaleListToAdd[]
   >([]);
@@ -27,8 +29,8 @@ export const useSeatingMenu = (currentSale: ExtendedSales | undefined) => {
   useEffect(() => {
 
     if (currentSale) {
-      setProductsInSaleList(currentSale.productsInSale);
-      setObservations(currentSale.observations);
+      setProductsInSaleList(currentSale.sale.productsInSale);
+      setObservations(currentSale.sale.observations);
     } else {
       setProductsInSaleList([]);
       setObservations("");
@@ -140,11 +142,10 @@ export const useSeatingMenu = (currentSale: ExtendedSales | undefined) => {
   };
 
   const createSeatingSale = async (tableId: number) => {
-    const res = await fetch(`http://localhost:3000/api/sales`, {
+    const res = await fetch(`http://localhost:3000/api/sales/salesInRestaurant`, {
       method: "POST",
       body: JSON.stringify({
         tableId: tableId,
-        delivery: false,
         observations: observations,
         productsInSale: productsInSaleListToAdd,
       }),

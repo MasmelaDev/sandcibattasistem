@@ -9,7 +9,9 @@ export async function DELETE(req: Request, { params }: Props) {
     const deletedProdusctsInSale = await db.productsInSale.deleteMany({
       where: { saleId: +params.id },
     });
-
+    const deletedSaleInRestaurant = await db.salesInRestaurant.delete({
+      where: { saleId: +params.id },
+    });
     const deletedSale = await db.sales.delete({
       where: { id: +params.id },
     });
@@ -26,17 +28,7 @@ export async function DELETE(req: Request, { params }: Props) {
 export async function PUT(req: Request, { params }: Props) {
   try {
     const body = await req.json();
-    const { status } = body;
-    if (status === "delivered") {
-      const updatedSale = await db.sales.update({
-        where: { id: +params.id },
-        data: { status: status, tableId: null },
-      });
-      return NextResponse.json(
-        { updatedSale, message: "Sale updated succesfully" },
-        { status: 200 }
-      );
-    }
+   
 
     const updatedSale = await db.sales.update({
       where: { id: +params.id },
