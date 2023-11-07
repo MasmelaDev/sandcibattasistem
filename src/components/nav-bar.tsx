@@ -5,8 +5,8 @@ import { IconArrowBack } from "@tabler/icons-react";
 
 export const Navbar = () => {
   return (
-    <nav>
-      <ul className="flex gap-2">
+    <nav className="flex items-center">
+      <ul className="">
         <Link className="text-white" href='/'><IconArrowBack/></Link>
       </ul>
     </nav>

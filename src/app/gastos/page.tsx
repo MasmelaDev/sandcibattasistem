@@ -1,8 +1,11 @@
+import { FoodLoader } from "@/components/food-loader"
 
 const GastosPage = () => {
   return (
-    <div>GastosPage</div>
-  )
-}
+    <>
+      <FoodLoader />
+    </>
+  );
+};
 
-export default GastosPage
+export default GastosPage;

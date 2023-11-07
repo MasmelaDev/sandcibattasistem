@@ -46,7 +46,7 @@ export const CreateCategory = () => {
   return (
     <>
       {category.open ? (
-        <li>
+        <div className="h-12">
           <input
             id="inputCategory"
             onBlur={createCategory}
@@ -54,19 +54,19 @@ export const CreateCategory = () => {
             onChange={(e) =>
               setCategory({ open: true, inputValue: e.target.value })
             }
-            className="w-full h-12 pl-2 "
+            className="w-full h-full pl-2 "
             type="text"
           />
-        </li>
+        </div>
       ) : (
-        <li>
+        <div className="h-12">
           <button
             onClick={handleOpen}
-            className={`h-12 font-medium flex items-center justify-center  text-lg w-full transition-colors duration-300 hover:bg-[#666] cursor-pointer border border-white/20 border-x-0`}
+            className={`h-full font-medium flex items-center justify-center  text-lg w-full transition-colors duration-300 hover:bg-[#666] cursor-pointer border border-white/20 border-x-0`}
           >
             <IconPlus className="w-20" />
           </button>
-        </li>
+        </div>
       )}
     </>
   );

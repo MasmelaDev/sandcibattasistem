@@ -57,10 +57,10 @@ export const SaleDetails = ({ sale, updateShowSaleDetail }: Props) => {
       <header className="bg-amber-500 text-white  flex p-2 sticky top-0 w-full  items-center h-14">
         <h2 className="flex items-center font-semibold">Venta</h2>
         <div className="ml-auto flex gap-3" role="group">
-          {sale.tableId && (
+          {sale.salesInRestaurant.tableId && (
             <button
               className="p-1 bg-amber-600 rounded-lg"
-              onClick={() => openSeatingMenu(sale.table.id)}
+              onClick={() => openSeatingMenu(sale.salesInRestaurant.table.id)}
             >
               <IconEdit />
             </button>

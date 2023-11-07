@@ -14,7 +14,6 @@ export const SeatingMenu = ({
 }: {
   selectedTable: ExtendedTables;
 }) => {
-  console.log(selectedTable)
   const {
     addProductToSale,
     updateObservationInSale,
@@ -163,7 +162,7 @@ export const SeatingMenu = ({
               <button
                 onClick={() =>
                   updateObservationInSale(
-                    selectedTable.currentSale.id,
+                    selectedTable.currentSale.saleId,
                     observations
                   )
                 }

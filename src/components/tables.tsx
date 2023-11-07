@@ -15,7 +15,7 @@ enum SaleStatus {
 export const Tables = ({ sales }: { sales: ExtendedSales[] | undefined }) => {
   const pathname = usePathname();
   const statusTitlesSeating: { [key in SaleStatus]: string } = {
-    [SaleStatus.Pending]: "Pedidos en preparación...",
+    [SaleStatus.Pending]: "Pedidos pendientes",
     [SaleStatus.Paid]: "Pedidos pagos",
   
   };

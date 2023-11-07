@@ -11,12 +11,14 @@ import {
 export type ExtendedProductsInSale = productsInSale & {
   product: products;
 };
-
+type currentSale = salesInRestaurant & {
+  sale:ExtendedSales
+ }
 export type ExtendedCategories = categories & {
   products: products[];
 };
 export type ExtendedTables = tables & {
-  currentSale: ExtendedSales;
+  currentSale: currentSale;
 };
 export type ExtendedSalesInRestaurant = salesInRestaurant &{
   table:tables

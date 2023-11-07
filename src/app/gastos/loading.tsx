@@ -3,7 +3,6 @@ const LoadingGastosPage = () => {
   return (
     <>
     <FoodLoader/>
-    <p>cargando...</p>
     </>
   )
 }
