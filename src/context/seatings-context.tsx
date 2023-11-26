@@ -33,7 +33,7 @@ export const SeatingsProvider = ({
   const [salesToday, setSalesToday] = useState<ExtendedSales[]>([]);
   useEffect(() => {
     const getSalesToday = async () => {
-      const data = await fetch("http://localhost:3000/api/sales/today");
+      const data = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/sales/today`);
       const sales: ExtendedSales[] = await data.json();
       setSalesToday(sales);
     };
@@ -50,7 +50,7 @@ export const SeatingsProvider = ({
   };
 
   const deleteTable = async (id: number) => {
-    const res = await fetch(`http://localhost:3000/api/tables/${id}`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/tables/${id}`, {
       method: "DELETE",
     });
     const data = await res.json();
@@ -61,7 +61,7 @@ export const SeatingsProvider = ({
     }
   };
   const addTable = async (position: number, numberTable: number) => {
-    const res = await fetch(`http://localhost:3000/api/tables`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/tables`, {
       cache: "no-cache",
       method: "POST",
       body: JSON.stringify({ position, numberTable }),
@@ -75,7 +75,7 @@ export const SeatingsProvider = ({
     }
   };
   const editTablePosition = async (position: number, id: number) => {
-    const res = await fetch(`http://localhost:3000/api/tables/${id}`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/tables/${id}`, {
       cache: "no-cache",
       method: "PUT",
       body: JSON.stringify({ position }),

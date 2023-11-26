@@ -34,7 +34,7 @@ export async function POST(req: Request) {
       );
     }
 
-    const product = await db.categories.create({
+    const product = await db.products.create({
       data: body,
     });
 

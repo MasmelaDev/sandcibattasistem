@@ -12,7 +12,7 @@ export const CategorySelect = ({ addProductToSale }: Props) => {
   useEffect(() => {
     const getCategories = async () => {
       
-      const res = await fetch(`http://localhost:3000/api/categories`,{
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/categories`,{
         cache:"no-cache"
       });
       const data = await res.json();
@@ -31,7 +31,7 @@ export const CategorySelect = ({ addProductToSale }: Props) => {
 
     const getProducts = async () => {
       const res = await fetch(
-        `http://localhost:3000/api/categories/${categoryId}`
+        `${process.env.NEXT_PUBLIC_API_URL}/categories/${categoryId}`
       );
       const data = await res.json();
       setProducts(data.products);

@@ -43,6 +43,7 @@ model products {
   name           String           @unique
   price          Int
   costo          Int?
+  active         Boolean          @default(true)
   category       categories       @relation(fields: [categoryId], references: [id])
   categoryId     Int
   createdAt      DateTime         @default(now())

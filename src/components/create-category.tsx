@@ -13,7 +13,7 @@ export const CreateCategory = () => {
 
   const createCategory = async () => {
     if (category.inputValue) {
-      const res = await fetch("http://localhost:3000/api/categories", {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/categories`, {
         method: "POST",
         body: JSON.stringify({ name: category.inputValue }),
       });

@@ -45,7 +45,7 @@ export const useSeatingMenu = (currentSale: currentSale | undefined) => {
     saleId: number,
     observation: string | null
   ) => {
-    const res = await fetch(`http://localhost:3000/api/sales/${saleId}`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/sales/${saleId}`, {
       method: "PUT",
       body: JSON.stringify({ observations: observation }),
     });
@@ -127,7 +127,7 @@ export const useSeatingMenu = (currentSale: currentSale | undefined) => {
 
   const removeProductInSaleList = async (productInSaleId: number) => {
     const res = await fetch(
-      `http://localhost:3000/api/sales/productInSale/${productInSaleId}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/sales/productInSale/${productInSaleId}`,
       {
         method: "DELETE",
       }
@@ -142,7 +142,7 @@ export const useSeatingMenu = (currentSale: currentSale | undefined) => {
   };
 
   const createSeatingSale = async (tableId: number) => {
-    const res = await fetch(`http://localhost:3000/api/sales/salesInRestaurant`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/sales/salesInRestaurant`, {
       method: "POST",
       body: JSON.stringify({
         tableId: tableId,

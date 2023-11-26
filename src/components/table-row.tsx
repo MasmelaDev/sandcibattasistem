@@ -39,7 +39,7 @@ export const TableRow = ({ sale, updateShowSaleDetail }: Props) => {
   const updateSaleStatus: ClickEventHandler = async (event, saleId) => {
     event.stopPropagation();
     
-    const res = await fetch(`http://localhost:3000/api/sales/salesInRestaurant/${saleId}`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/sales/salesInRestaurant/${saleId}`, {
       method: "PUT",
       body: JSON.stringify({ status: "paid",tableId:null }),
     });

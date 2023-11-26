@@ -38,7 +38,7 @@ export const SaleDetails = ({ sale, updateShowSaleDetail }: Props) => {
     }
   };
   const deleteSale = async (saleId: number) => {
-    const res = await fetch(`http://localhost:3000/api/sales/${saleId}`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/sales/${saleId}`, {
       method: "DELETE",
     });
     const data = await res.json();
