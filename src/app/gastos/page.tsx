@@ -1,9 +1,8 @@
-import { FoodLoader } from "@/components/food-loader"
 
 const GastosPage = () => {
   return (
     <>
-      <FoodLoader />
+      Gastos Page
     </>
   );
 };

@@ -105,7 +105,6 @@ export const SaleDetails = ({ sale, updateShowSaleDetail }: Props) => {
               <tr className="bg-green-400 font-semibold text-white">
                 <th>Cant</th>
                 <th>Producto</th>
-                <th>Precio</th>
                 <th>Total</th>
               </tr>
             </thead>
@@ -122,7 +121,6 @@ export const SaleDetails = ({ sale, updateShowSaleDetail }: Props) => {
                 >
                   <td>{productInSale.amount}</td>
                   <td>{productInSale.product?.name}</td>
-                  <td>{formatPrice.format(productInSale.product.price)}</td>
                   <td>{formatPrice.format(productInSale.total)}</td>
                 </motion.tr>
               ))}

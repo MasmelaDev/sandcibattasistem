@@ -44,6 +44,14 @@ export async function PUT(req: Request, { params }: Params) {
 
 export async function DELETE(req:Request,{ params }: Params) {
   try {
+    const currentSale = await db.salesInRestaurant.findFirst({
+      where: {
+        tableId: +params.id,
+      },
+    });
+    if(currentSale?.status === 'pending'){
+      return NextResponse.json({ error: "You can't delete a table with a pending sale" }, { status: 400 });
+    }
     const deletedTable = await db.tables.delete({
       where: {
         id: +params.id,

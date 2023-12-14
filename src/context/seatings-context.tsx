@@ -55,11 +55,15 @@ export const SeatingsProvider = ({
     });
     const data = await res.json();
 
+    if (data.error) {
+      toast.error(data.error);
+    }
     if (data.deletedTable) {
       const filteredTableList = tablesList.filter((table) => table.id !== id);
       setTablesList(filteredTableList);
     }
   };
+  
   const addTable = async (position: number, numberTable: number) => {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/tables`, {
       cache: "no-cache",

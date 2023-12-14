@@ -1,6 +1,5 @@
 import { ChangeEvent, useEffect, useState, useRef } from "react";
 import { type products } from "@prisma/client";
-import { motion } from "framer-motion";
 type Props = {
   addProductToSale: (product: products) => void;
 };

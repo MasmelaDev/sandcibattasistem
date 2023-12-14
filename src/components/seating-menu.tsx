@@ -184,7 +184,6 @@ export const SeatingMenu = ({
                   <tr className="bg-green-400 font-semibold text-white">
                     <th>Cant</th>
                     <th>Producto</th>
-                    <th>Precio</th>
                     <th>Total</th>
                     <th className="w-1/12"></th>
                   </tr>
@@ -204,10 +203,7 @@ export const SeatingMenu = ({
                       >
                         <td>{productInSale.amount}</td>
                         <td>{productInSale.product?.name}</td>
-                        <td>
-                          {" "}
-                          {formatPrice.format(productInSale.product.price)}
-                        </td>
+                   
                         <td> {formatPrice.format(productInSale.total)}</td>
                         <td className="flex h-12 w-full justify-center items-center">
                           <button

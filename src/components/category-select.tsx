@@ -11,13 +11,11 @@ export const CategorySelect = ({ addProductToSale }: Props) => {
 
   useEffect(() => {
     const getCategories = async () => {
-      
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/categories`,{
-        cache:"no-cache"
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/categories`, {
+        cache: "no-cache",
       });
       const data = await res.json();
       setCategories(data);
-      
     };
     getCategories();
     const selectElement = document.getElementById("categoriesSelect");
@@ -60,19 +58,23 @@ export const CategorySelect = ({ addProductToSale }: Props) => {
         ))}
       </select>
       <motion.div layout className="flex flex-wrap gap-5 bg-[#eee] p-5">
-        {products?.map((product) => (
-          <motion.button
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.4 }}
-            initial={{ opacity: 0 }}
-            title={product.name}
-            className="text-grayBackground border active:scale-90 duration-300 border-grayBackground truncate  h-8 w-32 font-medium bg-[#e6e6e6] rounded-sm px-2 py-1"
-            key={product.id}
-            onClick={() => addProductToSale(product)}
-          >
-            {product.name}
-          </motion.button>
-        ))}
+        {products?.map((product) => {
+          if (product.active) {
+            return (
+              <motion.button
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.4 }}
+                initial={{ opacity: 0 }}
+                title={product.name}
+                className="text-grayBackground border active:scale-90 duration-300 border-grayBackground truncate  h-8 w-32 font-medium bg-[#e6e6e6] rounded-sm px-2 py-1"
+                key={product.id}
+                onClick={() => addProductToSale(product)}
+              >
+                {product.name}
+              </motion.button>
+            );
+          }
+        })}
       </motion.div>
     </>
   );
