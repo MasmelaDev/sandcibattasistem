@@ -8,8 +8,15 @@ export async function GET() {
     const sales = await db.sales.findMany({
       where: { createdAt: { gte: today } },
       include: {
-        salesInDelivery: true,
-        salesInRestaurant: {include:{table:true}},
+        salesInDelivery: {
+          include: {
+            customer: {
+              include: { address: { include: { neighborhood: true } } },
+            },
+            domiciliary: true,
+          },
+        },
+        salesInRestaurant: { include: { table: true } },
         productsInSale: {
           include: { product: true },
           orderBy: { total: "asc" },

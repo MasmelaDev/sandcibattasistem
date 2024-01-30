@@ -68,6 +68,11 @@ tr {
   text-align: center;
 }
 td,
+
+tr.deliveryRow th{
+  width: 12.5%;
+}
+
 th {
   width: 20%;
 }

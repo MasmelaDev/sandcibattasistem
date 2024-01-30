@@ -5,7 +5,11 @@ import {
   type products,
   type categories,
   type salesInRestaurant,
-  type salesInDelivery
+  type salesInDelivery,
+  type customers,
+  type address,
+  type domiciliary,
+  type neighborhood
 } from "@prisma/client";
 
 export type ExtendedProductsInSale = productsInSale & {
@@ -23,9 +27,18 @@ export type ExtendedTables = tables & {
 export type ExtendedSalesInRestaurant = salesInRestaurant &{
   table:tables
 }
+export type ExtendedAddress = address &{
+  neighborhood:neighborhood
+}
+export type ExtendedCustomers = customers &{
+  address:ExtendedAddress
+}
+export type ExtendedSalesInDelivery = salesInDelivery &{
+  customer:ExtendedCustomers
+  domiciliary:domiciliary
+}
 export type ExtendedSales = sales & {
   productsInSale: ExtendedProductsInSale[]
   salesInRestaurant:ExtendedSalesInRestaurant
-  salesInDelivery:salesInDelivery
-  ;
+  salesInDelivery:ExtendedSalesInDelivery;
 };

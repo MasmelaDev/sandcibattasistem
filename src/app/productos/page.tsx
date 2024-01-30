@@ -49,7 +49,6 @@ const ProductosPage = async ({
         <CreateCategory />
       </aside>
       <section className="w-full  flex flex-col bg-white ">
-      
         <article className="w-full p-5 flex flex-col">
           <article className="flex  justify-end gap-2">
             {selectedCategorie && <CategoryOptions />}
@@ -64,7 +63,7 @@ const ProductosPage = async ({
       </section>
 
       <ProductsOptions
-      categories={categories}
+        categories={categories}
         selectedProduct={selectedProduct}
         selectedCategorie={selectedCategorie}
       />

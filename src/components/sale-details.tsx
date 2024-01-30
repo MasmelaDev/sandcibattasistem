@@ -12,7 +12,7 @@ type Props = {
   updateShowSaleDetail: (sale: ExtendedSales | null) => void;
 };
 export const SaleDetails = ({ sale, updateShowSaleDetail }: Props) => {
-  const saleDate = new Date(sale.createdAt)
+  const saleDate = new Date(sale.createdAt);
   const router = useRouter();
   const { changeSelectedTable, tablesList } = useContext(seatingsContext);
   const variants = {
@@ -38,9 +38,12 @@ export const SaleDetails = ({ sale, updateShowSaleDetail }: Props) => {
     }
   };
   const deleteSale = async (saleId: number) => {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/sales/${saleId}`, {
-      method: "DELETE",
-    });
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/sales/${saleId}`,
+      {
+        method: "DELETE",
+      }
+    );
     const data = await res.json();
     updateShowSaleDetail(null);
     router.refresh();
